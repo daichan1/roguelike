@@ -13,11 +13,12 @@ def card_select
   card_number
 end
 
-def battle(player, enemy, card_list, game_continue)
+def battle(player, enemy, deck, game_continue)
   puts "#{enemy.name}があらわれた"
   combat_continuity = true
   while combat_continuity do
-    player_turn(player, card_list, enemy)
+    nameplate = deck[0..4]
+    player_turn(player, nameplate, enemy)
 
     if is_zero_hp(enemy)
       display_victory_result(enemy)
@@ -35,13 +36,13 @@ def battle(player, enemy, card_list, game_continue)
   game_continue
 end
 
-def player_turn(player, card_list, enemy)
+def player_turn(player, nameplate, enemy)
     puts "#{player.name}のターン"
     turn_continue = true
     while turn_continue && player.en > 0 do
       display_player_status(player)
       card_number = card_select
-      card = card_list[card_number - 1]
+      card = nameplate[card_number - 1]
       puts card.name
 
       attack = calc_player_attack(player, card)
