@@ -13,15 +13,15 @@ def card_select
   card_number
 end
 
-def battle(player, enemy, deck, game_continue)
+def battle(player, enemy, game_continue)
   puts "#{enemy.name}があらわれた"
   combat_continuity = true
   while combat_continuity do
-    nameplate = deck[0..4]
-    player_turn(player, nameplate, enemy)
+    player_turn(player, enemy)
 
     if is_zero_hp(enemy)
       display_victory_result(enemy)
+      next_battle_preparation(player)
       return game_continue
     end
 
@@ -36,13 +36,16 @@ def battle(player, enemy, deck, game_continue)
   game_continue
 end
 
-def player_turn(player, nameplate, enemy)
+def player_turn(player, enemy)
     puts "#{player.name}のターン"
     turn_continue = true
+    card_draw(player)
     while turn_continue && player.en > 0 do
       display_player_status(player)
       card_number = card_select
-      card = nameplate[card_number - 1]
+      card = player.nameplate[card_number - 1]
+      player.cemetery.push(card)
+      player.nameplate.delete_at(card_number - 1)
       puts card.name
 
       attack = calc_player_attack(player, card)
@@ -59,6 +62,7 @@ def player_turn(player, nameplate, enemy)
       turn_continue = turn_select(turn_continue)
     end
     energy_replenishment(player) if player.en < MAX_ENERGY
+    nameplate_to_cemetery(player) if player.nameplate.length > 0
 end
 
 def enemy_turn(player, enemy)
@@ -71,6 +75,7 @@ end
 
 def display_player_status(player)
   puts "#{player.name}のHP:#{player.hp} 残りのエネルギー:#{player.en}"
+  puts "デッキ枚数:#{player.deck.length} 手札:#{player.nameplate.length} 墓地:#{player.cemetery.length}"
 end
 
 def display_enemy_attack(enemy)
@@ -128,4 +133,21 @@ def energy_replenishment(player)
   for i in 1..(MAX_ENERGY - player.en) do
     player.en += 1
   end
+end
+
+def nameplate_to_cemetery(player)
+  player.cemetery.concat(player.nameplate)
+  player.nameplate.clear
+end
+
+def card_draw(player)
+  player.nameplate = player.deck[0..4]
+  for i in 0..4 do
+    player.deck.delete_at(0)
+  end
+end
+
+def next_battle_preparation(player)
+  player.deck = Array.new(10, Card.new)
+  player.cemetery.clear
 end
