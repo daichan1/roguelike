@@ -10,8 +10,6 @@ puts "ローグライクへようこそ！"
 
 player = create_player
 
-deck = Array.new(10, Card.new)
-
 while true do
   menu_number = menu_select
   case menu_number
@@ -23,7 +21,7 @@ while true do
         route_decision = route_select(route_decision)
       end
       enemy = Enemy.new
-      game_continue = battle(player, enemy, deck, game_continue)
+      game_continue = battle(player, enemy, game_continue)
     end
   when GAME_END
     puts "ゲームを終了します"
