@@ -1,13 +1,14 @@
-def card_select
+def card_select(player)
   card_number = 0
   card_decision = UN_CARD_SELECT
   while card_decision === UN_CARD_SELECT do
-    puts "カードを選んでください(1:こうげき 2:ぼうぎょ 3:こうげき 4:ぼうぎょ 5:こうげき)"
+    display_nameplate(player)
     card_number = gets.to_i
-    if CARD_CANDIDATE.include?(card_number)
+    nameplate_count = (1..player.nameplate.length).to_a
+    if nameplate_count.include?(card_number)
       card_decision = CARD_SELECTED
     else
-      puts "1,2,3,4,5のどれかを入力してください"
+      puts "1~#{player.nameplate.length}の間から入力してください"
     end
   end
   card_number
@@ -42,7 +43,7 @@ def player_turn(player, enemy)
     card_draw(player)
     while turn_continue && player.en > 0 do
       display_player_status(player)
-      card_number = card_select
+      card_number = card_select(player)
       card = player.nameplate[card_number - 1]
       player.cemetery.push(card)
       player.nameplate.delete_at(card_number - 1)
@@ -71,6 +72,15 @@ def enemy_turn(player, enemy)
     defense = player.def
     damage = calc_damage(attack, defense)
     calc_remaining_hp(player, damage)
+end
+
+def display_nameplate(player)
+  puts "カードを選んでください"
+  result_message = ""
+  player.nameplate.each.with_index(1) do |card, index|
+    result_message += "#{index}: #{card.name} "
+  end
+  puts result_message
 end
 
 def display_player_status(player)
