@@ -57,6 +57,7 @@ def player_turn(player, enemy)
       attack = calc_player_attack(player, card)
       defense = enemy.def
       damage = calc_damage(attack, defense)
+      puts "#{damage}のダメージをあたえた"
       calc_remaining_hp(enemy, damage)
 
       if is_zero_hp(enemy)
@@ -76,6 +77,7 @@ def enemy_turn(player, enemy)
     attack = enemy.atk
     defense = player.def
     damage = calc_damage(attack, defense)
+    puts "#{damage}のダメージをうけた"
     calc_remaining_hp(player, damage)
 end
 
