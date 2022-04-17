@@ -17,6 +17,7 @@ end
 def battle(player, enemy, game_continue)
   puts "#{enemy.name}があらわれた"
   combat_continuity = true
+  deck_shuffle(player)
   while combat_continuity do
     player_turn(player, enemy)
 
@@ -40,7 +41,10 @@ end
 def player_turn(player, enemy)
     puts "#{player.name}のターン"
     turn_continue = true
-    deck_replenishment(player) if player.deck.length < DEFAULT_DECK_LENGTH
+    if player.deck.length < DEFAULT_DECK_LENGTH
+      deck_replenishment(player)
+      deck_shuffle(player)
+    end
     card_draw(player)
     while turn_continue && player.en > 0 do
       display_player_status(player)
@@ -166,4 +170,8 @@ end
 def next_battle_preparation(player)
   player.deck = Array.new(10, Card.new)
   player.cemetery.clear
+end
+
+def deck_shuffle(player)
+  player.deck.shuffle!
 end
