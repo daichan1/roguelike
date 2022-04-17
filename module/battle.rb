@@ -40,6 +40,7 @@ end
 def player_turn(player, enemy)
     puts "#{player.name}のターン"
     turn_continue = true
+    deck_replenishment(player) if player.deck.length < DEFAULT_DECK_LENGTH
     card_draw(player)
     while turn_continue && player.en > 0 do
       display_player_status(player)
@@ -143,6 +144,11 @@ def energy_replenishment(player)
   for i in 1..(MAX_ENERGY - player.en) do
     player.en += 1
   end
+end
+
+def deck_replenishment(player)
+  player.deck.concat(player.cemetery)
+  player.cemetery.clear
 end
 
 def nameplate_to_cemetery(player)
