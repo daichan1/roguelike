@@ -31,6 +31,7 @@ def battle(player, enemy, game_continue)
 
     if is_zero_hp(player)
       display_defeat_result(player)
+      card_initialize(player)
       game_continue = false
       combat_continuity = false
     end
@@ -176,4 +177,10 @@ end
 
 def deck_shuffle(player)
   player.deck.shuffle!
+end
+
+def card_initialize(player)
+  player.deck = Array.new(10, Card.new)
+  player.nameplate.clear
+  player.cemetery.clear
 end
