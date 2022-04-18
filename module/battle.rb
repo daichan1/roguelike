@@ -46,15 +46,12 @@ module Battle
       puts "#{damage}のダメージをあたえた"
       calc_remaining_hp(enemy, damage)
 
-      if is_zero_hp(enemy)
-        player.energy_replenishment if player.en < MAX_ENERGY
-        return
-      end
+      return if is_zero_hp(enemy)
 
       calc_remaining_en(player, card)
       turn_continue = turn_select(turn_continue)
     end
-    player.energy_replenishment if player.en < MAX_ENERGY
+    player.en = MAX_ENERGY if player.en < MAX_ENERGY
     player.nameplate_to_cemetery if player.nameplate.length > 0
   end
 
@@ -109,6 +106,7 @@ module Battle
   end
 
   def next_battle_preparation(player)
+    player.en = MAX_ENERGY
     player.deck = Array.new(DEFAULT_CARD_LENGTH, Card.new)
     player.cemetery.clear
     player.nameplate.clear
