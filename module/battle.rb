@@ -154,6 +154,10 @@ def energy_replenishment(player)
 end
 
 def deck_replenishment(player)
+  if player.deck.length >= 1
+    player.nameplate.concat(player.deck)
+    player.deck.clear
+  end
   player.deck.concat(player.cemetery)
   player.cemetery.clear
 end
@@ -164,7 +168,7 @@ def nameplate_to_cemetery(player)
 end
 
 def card_draw(player)
-  player.nameplate = player.deck[0..4]
+  player.nameplate.concat(player.deck[0..4])
   for i in 0..4 do
     player.deck.delete_at(0)
   end
@@ -173,6 +177,7 @@ end
 def next_battle_preparation(player)
   player.deck = Array.new(10, Card.new)
   player.cemetery.clear
+  player.nameplate.clear
 end
 
 def deck_shuffle(player)
