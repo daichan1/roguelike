@@ -6,7 +6,7 @@ class Player
     @atk = 0
     @def = 0
     @en = 3
-    @deck = Array.new(10, Card.new)
+    @deck = Array.new(DEFAULT_CARD_LENGTH, Card.new)
     @nameplate = []
     @cemetery = []
   end
@@ -16,7 +16,7 @@ class Player
     @atk = 0
     @def = 0
     @en = 3
-    @deck = Array.new(10, Card.new)
+    @deck = Array.new(DEFAULT_CARD_LENGTH, Card.new)
     @nameplate = []
     @cemetery = []
   end

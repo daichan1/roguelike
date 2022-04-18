@@ -168,14 +168,15 @@ def nameplate_to_cemetery(player)
 end
 
 def card_draw(player)
-  player.nameplate.concat(player.deck[0..4])
-  for i in 0..4 do
+  nameplate_upper_limit = DEFAULT_NAMEPLATE_LENGTH - player.nameplate.length
+  player.nameplate.concat(player.deck[0..nameplate_upper_limit])
+  for i in 0..nameplate_upper_limit do
     player.deck.delete_at(0)
   end
 end
 
 def next_battle_preparation(player)
-  player.deck = Array.new(10, Card.new)
+  player.deck = Array.new(DEFAULT_CARD_LENGTH, Card.new)
   player.cemetery.clear
   player.nameplate.clear
 end
