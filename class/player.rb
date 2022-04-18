@@ -21,12 +21,6 @@ class Player
     @cemetery = []
   end
 
-  def energy_replenishment
-    for i in 1..(MAX_ENERGY - en) do
-      @en += 1
-    end
-  end
-
   def deck_replenishment
     if deck.length >= 1
       nameplate.concat(deck)
