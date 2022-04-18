@@ -6,6 +6,8 @@ require './module/main_menu'
 require './module/route_select'
 require './module/battle.rb'
 
+include Battle
+
 puts "ローグライクへようこそ！"
 
 player = create_player
@@ -21,7 +23,7 @@ while true do
         route_decision = route_select(route_decision)
       end
       enemy = Enemy.new
-      game_continue = battle(player, enemy, game_continue)
+      game_continue = Battle.start(player, enemy, game_continue)
     end
   when GAME_END
     puts "ゲームを終了します"

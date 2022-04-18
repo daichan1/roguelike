@@ -20,4 +20,28 @@ class Player
     @nameplate = []
     @cemetery = []
   end
+
+  def energy_replenishment
+    for i in 1..(MAX_ENERGY - en) do
+      @en += 1
+    end
+  end
+
+  def deck_replenishment
+    if deck.length >= 1
+      nameplate.concat(deck)
+      deck.clear
+    end
+    deck.concat(cemetery)
+    cemetery.clear
+  end
+
+  def nameplate_to_cemetery
+    cemetery.concat(nameplate)
+    nameplate.clear
+  end
+
+  def deck_shuffle
+    deck.shuffle!
+  end
 end
