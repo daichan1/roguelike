@@ -40,15 +40,13 @@ module Battle
       player.nameplate.delete_at(card_number - 1)
       puts card.name
 
-      attack = calc_player_attack(player, card)
-      defense = enemy.def
-      damage = calc_damage(attack, defense)
+      card.action(player)
+      damage = calc_damage(player.atk, enemy.def)
       puts "#{damage}のダメージをあたえた"
       calc_remaining_hp(enemy, damage)
 
       return if is_zero_hp(enemy)
 
-      calc_remaining_en(player, card)
       turn_continue = turn_select(turn_continue)
     end
     player.en = MAX_ENERGY if player.en < MAX_ENERGY
@@ -57,9 +55,7 @@ module Battle
 
   def enemy_turn(player, enemy)
     display_enemy_attack(enemy)
-    attack = enemy.atk
-    defense = player.def
-    damage = calc_damage(attack, defense)
+    damage = calc_damage(enemy.atk, player.def)
     puts "#{damage}のダメージをうけた"
     calc_remaining_hp(player, damage)
   end
@@ -140,20 +136,12 @@ module Battle
     puts "GAME OVER"
   end
 
-  def calc_player_attack(player, card)
-    player.atk + card.atk
-  end
-
   def calc_damage(attack, defense)
     attack - defense
   end
 
   def calc_remaining_hp(character, damage)
     character.hp -= damage
-  end
-
-  def calc_remaining_en(player, card)
-    player.en -= card.cost
   end
 
   def is_zero_hp(character)
