@@ -139,7 +139,8 @@ module Battle
   end
 
   def calc_damage(attack, defense)
-    attack - defense
+    damage = attack - defense
+    damage < 0 ? 0 : damage
   end
 
   def calc_remaining_hp(character, damage)
