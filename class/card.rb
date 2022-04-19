@@ -3,7 +3,7 @@ class Card
 
   def action(player)
     player.attack = attack
-    player.defense = defense
+    player.defense += defense
     player.energy -= cost
   end
 end
