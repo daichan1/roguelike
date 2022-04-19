@@ -1,10 +1,10 @@
 class Card
-  attr_accessor :name, :cost, :type, :atk, :def, :eff
+  attr_accessor :name, :cost, :type, :attack, :defense, :eff
 
   def action(player)
-    player.atk = atk
-    player.def = @def
-    player.en -= cost
+    player.attack = attack
+    player.defense = defense
+    player.energy -= cost
   end
 end
 
@@ -13,8 +13,8 @@ class Fight < Card
     @name = "たたかう"
     @cost = 1
     @type = "アタック"
-    @atk = 6
-    @def = 0
+    @attack = 6
+    @defense = 0
     @eff = "敵にこうげきをする"
   end
 end
@@ -24,8 +24,8 @@ class Protection < Card
     @name = "ぼうぎょ"
     @cost = 1
     @type = "スキル"
-    @atk = 0
-    @def = 5
+    @attack = 0
+    @defense = 5
     @eff = "敵のこうげきを防ぐ"
   end
 end

@@ -1,9 +1,9 @@
 class Enemy
-  attr_accessor :name, :hp, :atk, :def
+  attr_accessor :name, :hp, :attack, :defense
   def initialize
     @name = "スライム"
     @hp = 10
-    @atk = 5
-    @def = 0
+    @attack = 5
+    @defense = 0
   end
 end

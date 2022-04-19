@@ -32,7 +32,7 @@ module Battle
       player.deck_shuffle
     end
     card_draw(player)
-    while turn_continue && player.en > 0 do
+    while turn_continue && player.energy > 0 do
       display_player_status(player)
       card_number = card_select(player)
       card = player.nameplate[card_number - 1]
@@ -41,7 +41,7 @@ module Battle
       puts card.name
 
       card.action(player)
-      damage = calc_damage(player.atk, enemy.def)
+      damage = calc_damage(player.attack, enemy.defense)
       puts "#{damage}のダメージをあたえた"
       calc_remaining_hp(enemy, damage)
 
@@ -49,13 +49,13 @@ module Battle
 
       turn_continue = turn_select(turn_continue)
     end
-    player.en = MAX_ENERGY if player.en < MAX_ENERGY
+    player.energy = MAX_ENERGY if player.energy < MAX_ENERGY
     player.nameplate_to_cemetery if player.nameplate.length > 0
   end
 
   def enemy_turn(player, enemy)
     display_enemy_attack(enemy)
-    damage = calc_damage(enemy.atk, player.def)
+    damage = calc_damage(enemy.attack, player.defense)
     puts "#{damage}のダメージをうけた"
     calc_remaining_hp(player, damage)
   end
@@ -102,7 +102,7 @@ module Battle
   end
 
   def next_battle_preparation(player)
-    player.en = MAX_ENERGY
+    player.energy = MAX_ENERGY
     player.deck = Array.new(DEFAULT_CARD_LENGTH, Fight.new)
     player.cemetery.clear
     player.nameplate.clear
@@ -118,7 +118,7 @@ module Battle
   end
 
   def display_player_status(player)
-    puts "#{player.name}のHP:#{player.hp} 残りのエネルギー:#{player.en}"
+    puts "#{player.name}のHP:#{player.hp} 残りのエネルギー:#{player.energy}"
     puts "デッキ枚数:#{player.deck.length} 手札:#{player.nameplate.length} 墓地:#{player.cemetery.length}"
   end
 
