@@ -1,11 +1,11 @@
 class Player
-  attr_accessor :name, :hp, :atk, :def, :en, :deck, :nameplate, :cemetery
+  attr_accessor :name, :hp, :attack, :defense, :energy, :deck, :nameplate, :cemetery
   def initialize(name)
     @name = name
     @hp = 50
-    @atk = 0
-    @def = 0
-    @en = 3
+    @attack = 0
+    @defense = 0
+    @energy = 3
     @deck = Array.new(DEFAULT_CARD_LENGTH, Fight.new)
     @nameplate = []
     @cemetery = []
@@ -13,9 +13,9 @@ class Player
 
   def status_initialize
     @hp = 50
-    @atk = 0
-    @def = 0
-    @en = 3
+    @attack = 0
+    @defense = 0
+    @energy = 3
     @deck = Array.new(DEFAULT_CARD_LENGTH, Fight.new)
     @nameplate = []
     @cemetery = []
