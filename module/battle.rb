@@ -42,7 +42,7 @@ module Battle
       puts card.name
 
       card.action(player)
-      damage = calc_enemy_damage(player, enemy)
+      damage = calc_damage(enemy, player.attack)
       puts "#{damage}のダメージをあたえた"
       calc_remaining_hp(enemy, damage)
 
@@ -56,7 +56,7 @@ module Battle
 
   def enemy_turn(player, enemy)
     display_enemy_attack(enemy)
-    damage = calc_player_damage(player, enemy)
+    damage = calc_damage(player, enemy.attack)
     puts "#{damage}のダメージをうけた"
     calc_remaining_hp(player, damage)
   end
@@ -138,25 +138,13 @@ module Battle
     puts "GAME OVER"
   end
 
-  def calc_player_damage(player, enemy)
-    damage = player.defense - enemy.attack
+  def calc_damage(character, attack)
+    damage = character.defense - attack
     if damage < 0
       damage = damage.abs
-      player.defense = 0
+      character.defense = 0
     else
-      player.defense -= enemy.attack
-      damage = 0
-    end
-    damage
-  end
-
-  def calc_enemy_damage(player, enemy)
-    damage = enemy.defense - player.attack
-    if damage < 0
-      damage = damage.abs
-      enemy.defense = 0
-    else
-      enemy.defense -= player.attack
+      character.defense -= attack
       damage = 0
     end
     damage
