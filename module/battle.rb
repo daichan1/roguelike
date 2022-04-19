@@ -20,6 +20,7 @@ module Battle
         game_continue = false
         combat_continuity = false
       end
+      player.defense = 0
     end
     game_continue
   end
@@ -102,6 +103,7 @@ module Battle
   end
 
   def next_battle_preparation(player)
+    player.defense = 0
     player.energy = MAX_ENERGY
     player.deck = Array.new(DEFAULT_CARD_LENGTH, Fight.new)
     player.cemetery.clear
