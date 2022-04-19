@@ -107,7 +107,7 @@ module Battle
 
   def next_battle_preparation(player)
     player.en = MAX_ENERGY
-    player.deck = Array.new(DEFAULT_CARD_LENGTH, Card.new)
+    player.deck = Array.new(DEFAULT_CARD_LENGTH, Fight.new)
     player.cemetery.clear
     player.nameplate.clear
   end
