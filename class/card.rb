@@ -1,5 +1,11 @@
 class Card
   attr_accessor :name, :cost, :type, :atk, :def, :eff
+
+  def action(player)
+    player.atk = atk
+    player.def = @def
+    player.en -= cost
+  end
 end
 
 class Fight < Card
