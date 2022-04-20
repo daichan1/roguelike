@@ -1,3 +1,4 @@
+require 'pry'
 require './constant'
 require './class/player'
 require './class/enemy'
