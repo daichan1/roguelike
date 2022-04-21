@@ -33,15 +33,21 @@ module Battle
       player.deck_shuffle
     end
     card_draw(player)
-    while turn_continue && player.energy > 0 do
+    while turn_continue do
       display_player_status(player)
       card_number = card_select(player)
       card = player.nameplate[card_number - 1]
-      player.cemetery.push(card)
-      player.nameplate.delete_at(card_number - 1)
+      is_card_useful = card.action(player)
+      unless is_card_useful
+        puts "エネルギーが足りません"
+        turn_continue = turn_select(turn_continue)
+        turn_continue ? next : break
+      end
       puts card.name
 
-      card.action(player)
+      player.cemetery.push(card)
+      player.nameplate.delete_at(card_number - 1)
+
       damage = calc_damage(enemy, player.attack)
       puts "#{damage}のダメージをあたえた"
       calc_remaining_hp(enemy, damage)
