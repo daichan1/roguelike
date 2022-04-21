@@ -35,6 +35,7 @@ module Battle
     card_draw(player)
     while turn_continue do
       display_player_status(player)
+      display_enemy_status(enemy)
       card_number = card_select(player)
       card = player.nameplate[card_number - 1]
       is_card_useful = card.action(player)
@@ -129,6 +130,10 @@ module Battle
   def display_player_status(player)
     puts "#{player.name}のHP:#{player.hp} 残りのエネルギー:#{player.energy} こうげき:#{player.attack} ぼうぎょ:#{player.defense}"
     puts "デッキ枚数:#{player.deck.length} 手札:#{player.nameplate.length} 墓地:#{player.cemetery.length}"
+  end
+
+  def display_enemy_status(enemy)
+    puts "#{enemy.name}のHP:#{enemy.hp} こうげき:#{enemy.attack} ぼうぎょ:#{enemy.defense}"
   end
 
   def display_enemy_attack(enemy)
