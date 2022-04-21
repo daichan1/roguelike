@@ -1,12 +1,14 @@
 class Player
   attr_accessor :name, :hp, :attack, :defense, :energy, :deck, :nameplate, :cemetery
+  DEFAULT_DECK = Array.new(5, Fight.new).concat(Array.new(5, Protection.new))
+
   def initialize(name)
     @name = name
     @hp = 50
     @attack = 0
     @defense = 0
     @energy = 3
-    @deck = Array.new(DEFAULT_CARD_LENGTH, Fight.new)
+    @deck = DEFAULT_DECK
     @nameplate = []
     @cemetery = []
   end
@@ -16,7 +18,7 @@ class Player
     @attack = 0
     @defense = 0
     @energy = 3
-    @deck = Array.new(DEFAULT_CARD_LENGTH, Fight.new)
+    @deck = DEFAULT_DECK
     @nameplate = []
     @cemetery = []
   end
