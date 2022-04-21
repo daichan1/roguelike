@@ -120,7 +120,7 @@ module Battle
   end
 
   def display_player_status(player)
-    puts "#{player.name}のHP:#{player.hp} 残りのエネルギー:#{player.energy}"
+    puts "#{player.name}のHP:#{player.hp} 残りのエネルギー:#{player.energy} こうげき:#{player.attack} ぼうぎょ:#{player.defense}"
     puts "デッキ枚数:#{player.deck.length} 手札:#{player.nameplate.length} 墓地:#{player.cemetery.length}"
   end
 
