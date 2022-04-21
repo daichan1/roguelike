@@ -45,6 +45,7 @@ module Battle
       damage = calc_damage(enemy, player.attack)
       puts "#{damage}のダメージをあたえた"
       calc_remaining_hp(enemy, damage)
+      player.attack -= card.attack
 
       return if is_zero_hp(enemy)
 
