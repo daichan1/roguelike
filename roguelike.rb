@@ -23,7 +23,7 @@ while true do
       while route_decision === UN_ROUTED do
         route_decision = route_select(route_decision)
       end
-      enemy = Enemy.new
+      enemy = Goblin.new
       game_continue = Battle.start(player, enemy, game_continue)
     end
   when GAME_END
