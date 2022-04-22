@@ -50,13 +50,19 @@ module Battle
       player.cemetery.push(card)
       player.nameplate.delete_at(card_number - 1)
 
-      enemy = select_attack_enemy(enemies)
+      enemy_number = select_attack_enemy_number(enemies)
+      enemy = enemies[enemy_number - 1]
       damage = calc_damage(enemy, player.attack)
       puts "#{damage}のダメージをあたえた"
       calc_remaining_hp(enemy, damage)
       player.attack -= card.attack
 
       return if is_annihilate_enemies(enemies)
+
+      if is_zero_hp(enemy)
+        enemies.delete_at(enemy_number - 1)
+        display_defeated_enemy_message(enemy)
+      end
 
       turn_continue = turn_select(turn_continue)
     end
@@ -106,8 +112,8 @@ module Battle
     turn_continue
   end
 
-  def select_attack_enemy(enemies)
-    enemy = enemies[0]
+  def select_attack_enemy_number(enemies)
+    enemy_number = DEFAULT_SELECT_ENEMY_NUMBER
     enemy_decision = true
     enemy_names = ""
     enemies.each.with_index(1) do |enemy, index|
@@ -119,13 +125,12 @@ module Battle
       enemy_number = gets.to_i
       enemies_count = (1..enemies.length).to_a
       if enemies_count.include?(enemy_number)
-        enemy = enemies[enemy_number - 1]
         enemy_decision = false
       else
         puts "1~#{enemies.length}の間から入力してください"
       end
     end
-    enemy
+    enemy_number
   end
 
   def card_draw(player)
@@ -184,6 +189,10 @@ module Battle
   def display_defeat_result(player)
     puts "#{player.name}は力尽きた"
     puts "GAME OVER"
+  end
+
+  def display_defeated_enemy_message(enemy)
+    puts "#{enemy.name}をたおした"
   end
 
   def calc_damage(character, attack)
