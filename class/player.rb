@@ -23,6 +23,11 @@ class Player
     @cemetery = []
   end
 
+  def deck_preparation
+    deck_replenishment
+    deck_shuffle
+  end
+
   def deck_replenishment
     if deck.length >= 1
       nameplate.concat(deck)
