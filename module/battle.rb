@@ -28,10 +28,6 @@ module Battle
   def player_turn(player, enemies)
     puts "#{player.name}のターン"
     turn_continue = true
-    if player.deck.length < DEFAULT_DECK_LENGTH
-      player.deck_replenishment
-      player.deck_shuffle
-    end
     card_draw(player)
     while turn_continue do
       display_player_status(player)
@@ -134,6 +130,7 @@ module Battle
   end
 
   def card_draw(player)
+    player.deck_preparation if player.deck.length < DEFAULT_DECK_LENGTH
     nameplate_upper_limit = DEFAULT_NAMEPLATE_LENGTH - player.nameplate.length
     player.nameplate.concat(player.deck[0..nameplate_upper_limit])
     for i in 0..nameplate_upper_limit do
