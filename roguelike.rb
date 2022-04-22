@@ -23,8 +23,8 @@ while true do
       while route_decision === UN_ROUTED do
         route_decision = route_select(route_decision)
       end
-      enemy = Goblin.new
-      game_continue = Battle.start(player, enemy, game_continue)
+      enemies = [Slime.new, Goblin.new]
+      game_continue = Battle.start(player, enemies, game_continue)
     end
   when GAME_END
     puts "ゲームを終了します"

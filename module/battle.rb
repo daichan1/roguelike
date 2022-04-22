@@ -1,18 +1,18 @@
 module Battle
-  def start(player, enemy, game_continue)
-    puts "#{enemy.name}があらわれた"
+  def start(player, enemies, game_continue)
+    display_enemies_name(enemies)
     combat_continuity = true
     player.deck_shuffle
     while combat_continuity do
-      player_turn(player, enemy)
+      player_turn(player, enemies)
 
-      if is_zero_hp(enemy)
-        display_victory_result(enemy)
+      if is_annihilate_enemies(enemies)
+        display_victory_result(enemies)
         next_battle_preparation(player)
         return game_continue
       end
 
-      enemy_turn(player, enemy)
+      enemy_turn(player, enemies)
 
       if is_zero_hp(player)
         display_defeat_result(player)
@@ -25,7 +25,7 @@ module Battle
     game_continue
   end
 
-  def player_turn(player, enemy)
+  def player_turn(player, enemies)
     puts "#{player.name}のターン"
     turn_continue = true
     if player.deck.length < DEFAULT_DECK_LENGTH
@@ -35,7 +35,8 @@ module Battle
     card_draw(player)
     while turn_continue do
       display_player_status(player)
-      display_enemy_status(enemy)
+      display_enemy_status(enemies)
+
       card_number = card_select(player)
       card = player.nameplate[card_number - 1]
       is_card_useful = card.action(player)
@@ -49,12 +50,13 @@ module Battle
       player.cemetery.push(card)
       player.nameplate.delete_at(card_number - 1)
 
+      enemy = select_attack_enemy(enemies)
       damage = calc_damage(enemy, player.attack)
       puts "#{damage}のダメージをあたえた"
       calc_remaining_hp(enemy, damage)
       player.attack -= card.attack
 
-      return if is_zero_hp(enemy)
+      return if is_annihilate_enemies(enemies)
 
       turn_continue = turn_select(turn_continue)
     end
@@ -62,11 +64,13 @@ module Battle
     player.nameplate_to_cemetery if player.nameplate.length > 0
   end
 
-  def enemy_turn(player, enemy)
-    display_enemy_attack(enemy)
-    damage = calc_damage(player, enemy.attack)
-    puts "#{damage}のダメージをうけた"
-    calc_remaining_hp(player, damage)
+  def enemy_turn(player, enemies)
+    enemies.each do |enemy|
+      display_enemy_attack(enemy)
+      damage = calc_damage(player, enemy.attack)
+      puts "#{damage}のダメージをうけた"
+      calc_remaining_hp(player, damage)
+    end
   end
 
   def card_select(player)
@@ -102,6 +106,28 @@ module Battle
     turn_continue
   end
 
+  def select_attack_enemy(enemies)
+    enemy = enemies[0]
+    enemy_decision = true
+    enemy_names = ""
+    enemies.each.with_index(1) do |enemy, index|
+      enemy_names += "#{index}: #{enemy.name}"
+    end
+    while enemy_decision do
+      puts "攻撃する敵を選択してださい"
+      puts enemy_names
+      enemy_number = gets.to_i
+      enemies_count = (1..enemies.length).to_a
+      if enemies_count.include?(enemy_number)
+        enemy = enemies[enemy_number - 1]
+        enemy_decision = false
+      else
+        puts "1~#{enemies.length}の間から入力してください"
+      end
+    end
+    enemy
+  end
+
   def card_draw(player)
     nameplate_upper_limit = DEFAULT_NAMEPLATE_LENGTH - player.nameplate.length
     player.nameplate.concat(player.deck[0..nameplate_upper_limit])
@@ -118,6 +144,12 @@ module Battle
     player.nameplate.clear
   end
 
+  def display_enemies_name(enemies)
+    enemies.each do |enemy|
+      puts "#{enemy.name}があらわれた"
+    end
+  end
+
   def display_nameplate(player)
     puts "カードを選んでください"
     result_message = ""
@@ -132,8 +164,10 @@ module Battle
     puts "デッキ枚数:#{player.deck.length} 手札:#{player.nameplate.length} 墓地:#{player.cemetery.length}"
   end
 
-  def display_enemy_status(enemy)
-    puts "#{enemy.name}のHP:#{enemy.hp} こうげき:#{enemy.attack} ぼうぎょ:#{enemy.defense}"
+  def display_enemy_status(enemies)
+    enemies.each do |enemy|
+      puts "#{enemy.name}のHP:#{enemy.hp} こうげき:#{enemy.attack} ぼうぎょ:#{enemy.defense}"
+    end
   end
 
   def display_enemy_attack(enemy)
@@ -141,8 +175,10 @@ module Battle
     puts "こうげき"
   end
 
-  def display_victory_result(enemy)
-    puts "#{enemy.name}をたおした"
+  def display_victory_result(enemies)
+    enemies.each do |enemy|
+      puts "#{enemy.name}をたおした"
+    end
   end
 
   def display_defeat_result(player)
@@ -168,5 +204,14 @@ module Battle
 
   def is_zero_hp(character)
     character.hp <= 0 ? true : false
+  end
+
+  def is_annihilate_enemies(enemies)
+    total_deaths = []
+    enemies.each do |enemy|
+      is_annihilate = enemy.hp <= 0 ? true : false
+      total_deaths.push(is_annihilate)
+    end
+    total_deaths.all?
   end
 end
