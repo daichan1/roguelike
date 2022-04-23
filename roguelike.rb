@@ -5,7 +5,7 @@ require './class/card'
 require './class/player'
 require './module/main_menu'
 require './module/route_select'
-require './module/battle.rb'
+require './module/battle'
 
 include Battle
 

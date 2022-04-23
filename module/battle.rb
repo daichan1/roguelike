@@ -62,8 +62,7 @@ module Battle
 
       turn_continue = turn_select(turn_continue)
     end
-    player.energy = MAX_ENERGY if player.energy < MAX_ENERGY
-    player.nameplate_to_cemetery if player.nameplate.length > 0
+    turn_end(player)
   end
 
   def enemy_turn(player, enemies)
@@ -136,6 +135,11 @@ module Battle
     for i in 0..nameplate_upper_limit do
       player.deck.delete_at(0)
     end
+  end
+
+  def turn_end(player)
+    player.energy = MAX_ENERGY if player.energy < MAX_ENERGY
+    player.nameplate_to_cemetery if player.nameplate.length > 0
   end
 
   def next_battle_preparation(player)
