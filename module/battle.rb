@@ -20,7 +20,7 @@ module Battle
         game_continue = false
         combat_continuity = false
       end
-      player.defense = 0
+      next_turn_preparation(player)
     end
     game_continue
   end
@@ -148,6 +148,10 @@ module Battle
     player.deck.concat(player.nameplate).concat(player.cemetery)
     player.cemetery.clear
     player.nameplate.clear
+  end
+
+  def next_turn_preparation(player)
+    player.defense = 0
   end
 
   def display_enemies_name(enemies)
