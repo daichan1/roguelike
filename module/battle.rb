@@ -43,8 +43,7 @@ module Battle
       end
       puts card.name
 
-      player.cemetery.push(card)
-      player.nameplate.delete_at(card_number - 1)
+      player.move_cemetery_used_card(card, card_number)
 
       enemy_number = select_attack_enemy_number(enemies)
       enemy = enemies[enemy_number - 1]

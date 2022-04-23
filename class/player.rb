@@ -42,6 +42,11 @@ class Player
     nameplate.clear
   end
 
+  def move_cemetery_used_card(card, card_number)
+    cemetery.push(card)
+    nameplate.delete_at(card_number - 1)
+  end
+
   def deck_shuffle
     deck.shuffle!
   end
