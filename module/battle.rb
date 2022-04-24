@@ -45,12 +45,14 @@ module Battle
 
       player.move_cemetery_used_card(card, card_number)
 
-      enemy_number = select_attack_enemy_number(enemies)
+      enemy_number = select_attack_enemy_number(enemies, player)
       enemy = enemies[enemy_number - 1]
-      damage = calc_damage(enemy, player.attack)
-      puts "#{damage}のダメージをあたえた"
-      calc_remaining_hp(enemy, damage)
-      player.attack -= card.attack
+      if player.attack > 0
+        damage = calc_damage(enemy, player.attack)
+        puts "#{damage}のダメージをあたえた"
+        calc_remaining_hp(enemy, damage)
+        player.attack -= card.attack
+      end
 
       return if is_annihilate_enemies(enemies)
 
@@ -106,10 +108,11 @@ module Battle
     turn_continue
   end
 
-  def select_attack_enemy_number(enemies)
+  def select_attack_enemy_number(enemies, player)
     enemy_number = DEFAULT_SELECT_ENEMY_NUMBER
     enemy_decision = true
     enemy_names = ""
+    return enemy_number if player.attack <= 0
     enemies.each.with_index(1) do |enemy, index|
       enemy_names += "#{index}: #{enemy.name}"
     end
