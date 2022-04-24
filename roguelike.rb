@@ -23,7 +23,11 @@ while true do
       while route_decision === UN_ROUTED do
         route_decision = route_select(route_decision)
       end
-      enemies = [Slime.new, Goblin.new]
+      enemies = []
+      enemy_count = rand(1..3)
+      enemy_count.times do |i|
+        enemies.push([Slime.new, Goblin.new].sample)
+      end
       game_continue = Battle.start(player, enemies, game_continue)
     end
   when GAME_END
